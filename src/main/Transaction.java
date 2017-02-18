@@ -168,6 +168,16 @@ public class Transaction {
         }
     }
 
+    public void computeHash() {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(getRawTx());
+            hash = md.digest();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void setHash(byte[] h) {
         hash = h;
     }
