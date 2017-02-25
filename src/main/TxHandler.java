@@ -1,3 +1,5 @@
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 public class TxHandler {
@@ -73,13 +75,23 @@ public class TxHandler {
             utxoPool.removeUTXO(utxo);
         }
         int i = 0;
-        transaction.computeHash();
+        computeHash(transaction);
         for (Transaction.Output output : transaction.getOutputs()) {
             UTXO utxo = new UTXO(transaction.getHash(), i);
             utxoPool.addUTXO(utxo, output);
             ++i;
         }
         return transaction;
+    }
+
+    private void computeHash(Transaction transaction) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(transaction.getRawTx());
+            transaction.setHash(md.digest());
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
