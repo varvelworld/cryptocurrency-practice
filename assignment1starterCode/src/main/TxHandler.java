@@ -2,6 +2,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
+@SuppressWarnings("Duplicates")
 public class TxHandler {
 
     final private UTXOPool utxoPool;

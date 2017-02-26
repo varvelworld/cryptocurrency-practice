@@ -1,8 +1,4 @@
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.PublicKey;
-import java.security.Signature;
-import java.security.SignatureException;
+import java.security.*;
 
 public class Crypto {
 
@@ -32,5 +28,21 @@ public class Crypto {
         }
         return false;
 
+    }
+
+
+    public static byte[] signature(PrivateKey privateKey, byte[] message) {
+        try {
+            Signature sig = Signature.getInstance("SHA256withRSA");
+            sig.initSign(privateKey);
+            sig.update(message);
+            return sig.sign();
+        } catch (NoSuchAlgorithmException e) {
+           throw new RuntimeException(e);
+        } catch (SignatureException e) {
+            throw new RuntimeException(e);
+        } catch (InvalidKeyException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
